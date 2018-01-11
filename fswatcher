@@ -20,7 +20,7 @@ if ! which $1 2>&1 > /dev/null; then
     echo "Error, $2 not found (in \$PATH)\nExiting..." && exit
 fi
 if [ ! -r $2 ]; then
-    echo "Error, $1 not readable\nExiting..." && exit
+    echo "Error, $2 not readable\nExiting..." && exit
 fi
 
 $1 $2 &
