@@ -10,10 +10,8 @@ pid=
 trap "ctrl_c $pid" INT
 
 if [ -z "$1" ] || [ -z "$2" ]; then
-    echo
-    echo "Usage: $0 <command> <filename>"
-    echo "Example: '$0 python test.py' will monitor test.py and trigger 'python test.py' on change"
-    echo
+    echo -e "\nUsage: $0 <command> <filename>"
+    echo -e "Example: '$0 python test.py' will monitor test.py and trigger 'python test.py' on change\n"
     exit
 fi
 if ! which $1 2>&1 > /dev/null; then
@@ -29,7 +27,7 @@ died=1
 
 while ((1)); do
     if ! ps -p $pid 2>&1 > /dev/null && [ ! -z $died ]; then
-        echo "[*] $pid Died"
+        echo -e "\n[*] $pid Died\n"
         died=
     fi
     oldval=$(stat --format="%z" $2)
@@ -40,7 +38,7 @@ while ((1)); do
             if ps -p $pid 2>&1 > /dev/null; then
                 kill $pid
                 wait $pid 2>/dev/null
-                echo "[*] pid $pid killed"
+                echo -e "\n[*] pid $pid killed\n"
             fi
         fi
         $1 $2 &
