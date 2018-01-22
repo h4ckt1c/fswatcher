@@ -1,5 +1,11 @@
 #!/bin/bash
 
+PLATFORM=$(uname)
+if [ "$PLATFORM" == "Darwin" ]; then
+    statcmd="stat -f %z"
+elif [ "$PLATFORM" == "Linux" ]; then
+    statcmd="stat --format=%z"
+fi
 ctrl_c() {
     echo "[*] Caught ctrl-c, exiting..."
     kill $pid > /dev/null 2>&1
@@ -30,9 +36,11 @@ while ((1)); do
         echo -e "\n[*] $pid Died\n"
         died=
     fi
-    oldval=$(stat --format="%z" $2)
+#     oldval=$(stat --format="%z" $2)
+    oldval=$(eval ${statcmd} $2)
     sleep 1
-    newval=$(stat --format="%z" $2)
+#     newval=$(stat --format="%z" $2)
+    newval=$(eval ${statcmd} $2)
     if [ "$newval" != "$oldval" ]; then
         if [ ! -z $pid ]; then
             if ps -p $pid 2>&1 > /dev/null; then
