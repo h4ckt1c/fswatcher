@@ -7,7 +7,7 @@ will recognize this and trigger defined actions.
 
 ## Usage
 
-    fswatcher python myscript.py
+    fswatcher python myscript.py --help
 
 This will monitor myscript.py for changes, executes `python myscript.py` on change and print the
 corresponding output.
