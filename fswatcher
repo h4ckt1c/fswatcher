@@ -15,8 +15,15 @@ ctrl_c() {
 pid=
 trap "ctrl_c $pid" INT
 
+# setup args
+[ ! -z "$3" ] && args="$3" || args=
+
 if [ -z "$1" ] || [ -z "$2" ]; then
-    echo -e "\nUsage: $0 <command> <filename>"
+    echo -e "\nUsage: $0 <command> <filename> [args]"
+    echo -e "  <command>\tWhich command should execute filename?!"
+    echo -e "  <filename>\tWhich file should be monitored for changes?!"
+    echo -e "  [args]\tArguments for script (optinal)"
+    echo
     echo -e "Example: '$0 python test.py' will monitor test.py and trigger 'python test.py' on change\n"
     exit
 fi
@@ -27,7 +34,7 @@ if [ ! -r $2 ]; then
     echo "Error, $2 not readable\nExiting..." && exit
 fi
 
-$1 $2 &
+$1 $2 $args&
 pid=$!
 died=1
 
@@ -49,7 +56,7 @@ while ((1)); do
                 echo -e "\n[*] pid $pid killed\n"
             fi
         fi
-        $1 $2 &
+        $1 $2 $args &
         pid=$!
         died=$pid
         echo -e "\n#####################################################################\n"
